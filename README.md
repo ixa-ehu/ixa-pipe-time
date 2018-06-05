@@ -1,7 +1,7 @@
 
 ixa-pipe-time
 =============
-[![Build Status](https://travis-ci.org/ixa-ehu/ixa-pipe-nerc.svg?branch=master)](https://travis-ci.org/ixa-ehu/ixa-pipe-time)
+[![Build Status](https://travis-ci.org/ixa-ehu/ixa-pipe-time.svg?branch=master)](https://travis-ci.org/ixa-ehu/ixa-pipe-time)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/apache/opennlp/master/LICENSE)
 
 ixa-pipe-time is a multilingual Temporal processing tagger developed within the IXA pipes tools  [http://ixa2.si.ehu.es/ixa-pipes].
@@ -58,16 +58,16 @@ through standard output. The NAF format specification is here:
 
 (http://wordpress.let.vupr.nl/naf/)
 
-You can get the necessary input for ixa-pipe-nerc by piping
+You can get the necessary input for ixa-pipe-time by piping
 [ixa-pipe-tok](https://github.com/ixa-ehu/ixa-pipe-tok) and
 [ixa-pipe-pos](https://github.com/ixa-ehu/ixa-pipe-pos) as shown in the
 example.
 
-There are several options to tag with ixa-pipe-nerc:
+There are several options to tag with ixa-pipe-time:
 
 + **model**: pass the model as a parameter.
 + **language**: pass the language as a parameter.
-+ **outputFormat**: Output annotation in a format: available CoNLL03, CoNLL02, and NAF. It defaults to NAF.
++ **outputFormat**: Output annotation in a format: timeml and NAF. It defaults to NAF.
 
 **Example**:
 
@@ -90,7 +90,7 @@ Once the server is running we can send NAF documents containing (at least) the t
 
 ## API
 
-The easiest way to use ixa-pipe-nerc programatically is via Apache Maven. Add
+The easiest way to use ixa-pipe-time programatically is via Apache Maven. Add
 this dependency to your pom.xml:
 
 ````shell
@@ -189,7 +189,7 @@ git clone https://github.com/ixa-ehu/ixa-pipe-time
 
 ### 4. Compile
 
-Execute this command to compile ixa-pipe-nerc:
+Execute this command to compile ixa-pipe-time:
 
 ````shell
 cd ixa-pipe-time
