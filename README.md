@@ -9,7 +9,6 @@ ixa-pipe-time is a multilingual Temporal processing tagger developed within the 
 ## TABLE OF CONTENTS
 
 1. [Overview of ixa-pipe-time](#overview)
-  + [Available features](#features)
   + [Distributed models](#time-models)
 2. [Usage of ixa-pipe-time](#cli-usage)
   + [Tagging](#tagging)
@@ -32,15 +31,14 @@ ixa-pipe-time provides a runable jar with the following command-line basic funct
 
 1. **server**: starts a TCP service loading the model and required resources.
 2. **client**: sends a NAF document to a running TCP server.
-3. **tag**: reads a NAF document containing *wf* and *term* elements and tags named
-   entities.
+3. **tag**: reads a NAF document containing *wf* elements and tags and normalizes temporal expressions.
 
 Each of these functionalities are accessible by adding (server|client|tag) as a
 subcommand to ixa-pipe-time-${version}-exec.jar. Please read below and check the -help
 parameter:
 
 ````shell
-java -jar target/ixa-pipe-time-${version}-exec.jar (tag|server|client) -help
+java -jar ixa-pipe-time-${version}-exec.jar (tag|server|client) -help
 ````
 
 ### Tagging
@@ -48,20 +46,18 @@ java -jar target/ixa-pipe-time-${version}-exec.jar (tag|server|client) -help
 If you are in hurry, just execute:
 
 ````shell
-cat file.txt | java -jar target/ixa-pipe-tok-$version-exec.jar tok -l en | java -jar ixa-pipe-pos-1.5.0-exec.jar tag -m en-pos-perceptron-autodict01-conll09.bin -lm en-lemma-perceptron-conll09.bin | java -jar $PATH/target/ixa-pipe-time-${version}-exec.jar tag -m model.bin
+cat file.txt | java -jar ixa-pipe-tok-$version-exec.jar tok -l en | java -jar ixa-pipe-time-${version}-exec.jar tag -m model.bin
 ````
 
 If you want to know more, please follow reading.
 
-ixa-pipe-time reads NAF documents (with *wf* and *term* elements) via standard input and outputs NAF
+ixa-pipe-time reads NAF documents (with *wf* elements) via standard input and outputs NAF
 through standard output. The NAF format specification is here:
 
 (http://wordpress.let.vupr.nl/naf/)
 
 You can get the necessary input for ixa-pipe-time by piping
-[ixa-pipe-tok](https://github.com/ixa-ehu/ixa-pipe-tok) and
-[ixa-pipe-pos](https://github.com/ixa-ehu/ixa-pipe-pos) as shown in the
-example.
+[ixa-pipe-tok](https://github.com/ixa-ehu/ixa-pipe-tok) as shown in the example:
 
 There are several options to tag with ixa-pipe-time:
 
@@ -72,7 +68,7 @@ There are several options to tag with ixa-pipe-time:
 **Example**:
 
 ````shell
-cat file.txt | java -jar target/ixa-pipe-tok-$version-exec.jar tok -l en | java -jar ixa-pipe-pos-1.5.0-exec.jar tag -m en-pos-perceptron-autodict01-conll09.bin -lm en-lemma-perceptron-conll09.bin | java -jar $PATH/target/ixa-pipe-time-${version}-exec.jar tag -m en-local-tempeval3.bin
+cat file.txt | java -jar ixa-pipe-tok-$version-exec.jar tok -l en | java -jar ixa-pipe-time-${version}-exec.jar tag -m en-model-tempeval3.bin
 ````
 
 ### Server
@@ -80,12 +76,12 @@ cat file.txt | java -jar target/ixa-pipe-tok-$version-exec.jar tok -l en | java 
 We can start the TCP server as follows:
 
 ````shell
-java -jar target/ixa-pipe-time-${version}-exec.jar server -l en --port 2060 -m en-model.bin
+java -jar ixa-pipe-time-${version}-exec.jar server -l en --port 2060 -m en-model-tempeval3.bin
 ````
-Once the server is running we can send NAF documents containing (at least) the term layer like this:
+Once the server is running we can send NAF documents containing (at least) the WF layer like this:
 
 ````shell
- cat file.pos.naf | java -jar target/ixa-pipe-time-${version}-exec.jar client -p 2060
+ cat file.tok.naf | java -jar ixa-pipe-time-${version}-exec.jar client -p 2060
 ````
 
 ## API

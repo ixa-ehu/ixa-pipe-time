@@ -191,14 +191,15 @@ public class TimeTaggerServer {
         new StringReader(stringFromClient));
     KAFDocument kaf = KAFDocument.createFromStream(clientReader);
     KAFDocument.LinguisticProcessor newLp = kaf.addLinguisticProcessor(
-        "entities", "ixa-pipe-nerc-" + Files.getNameWithoutExtension(model),
+        "timeExpressions",
+        "ixa-pipe-time-" + Files.getNameWithoutExtension(model),
         version + "-" + commit);
     newLp.setBeginTimestamp();
     annotator.annotateTimeToKAF(kaf);
     // get outputFormat
     String kafToString = null;
     if (outputFormat.equalsIgnoreCase("timeml")) {
-      kafToString = annotator.annotateNEsToCoNLL2002(kaf);
+      kafToString = annotator.annotateToTimeML(kaf);
     } else {
       newLp.setEndTimestamp();
       kafToString = kaf.toString();

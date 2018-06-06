@@ -202,7 +202,7 @@ public class CLI {
     }
     Properties properties = setAnnotateProperties(model, lang, clearFeatures);
     KAFDocument.LinguisticProcessor newLp = kaf.addLinguisticProcessor(
-        "entities", IXA_PIPE_TIME + Files.getNameWithoutExtension(model),
+        "timeExpressions", IXA_PIPE_TIME + Files.getNameWithoutExtension(model),
         version + "-" + commit);
     newLp.setBeginTimestamp();
     Annotate annotator = new Annotate(properties);
@@ -210,7 +210,7 @@ public class CLI {
     newLp.setEndTimestamp();
     String kafToString = null;
     if (outputFormat.equalsIgnoreCase("timeml")) {
-      kafToString = annotator.annotateNEsToCoNLL2002(kaf);
+      kafToString = annotator.annotateToTimeML(kaf);
     } else {
       kafToString = kaf.toString();
     }
@@ -228,7 +228,8 @@ public class CLI {
     String clearFeatures = parsedArguments.getString("clearFeatures");
     String outputFormat = parsedArguments.getString("outputFormat");
     String lang = parsedArguments.getString("language");
-    Properties serverproperties = setNameServerProperties(port, model, lang, clearFeatures, outputFormat);
+    Properties serverproperties = setNameServerProperties(port, model, lang,
+        clearFeatures, outputFormat);
     new TimeTaggerServer(serverproperties);
   }
 
@@ -295,12 +296,10 @@ public class CLI {
             "Reset the adaptive features every sentence; defaults to 'no'; if -DOCSTART- marks"
                 + " are present, choose 'docstart'.\n");
     annotateParser.addArgument("-l", "--language").required(false)
-        .choices("en", "es", "eu")
-        .help(
+        .choices("en", "es", "eu").help(
             "Choose language; it defaults to the language value in incoming NAF file.\n");
     annotateParser.addArgument("-o", "--outputFormat").required(false)
-        .choices("timeml", "naf")
-        .setDefault(Flags.DEFAULT_OUTPUT_FORMAT)
+        .choices("timeml", "naf").setDefault(Flags.DEFAULT_OUTPUT_FORMAT)
         .help("Choose output format; it defaults to NAF.\n");
   }
 
@@ -317,12 +316,10 @@ public class CLI {
         .help(
             "Reset the adaptive features every sentence; defaults to 'no'; if -DOCSTART- marks"
                 + " are present, choose 'docstart'.\n");
-    serverParser
-        .addArgument("-l", "--language").required(true).choices("en", "es", "eu")
-        .help("Choose language.\n");
+    serverParser.addArgument("-l", "--language").required(true)
+        .choices("en", "es", "eu").help("Choose language.\n");
     serverParser.addArgument("-o", "--outputFormat").required(false)
-        .choices("timeml", "naf")
-        .setDefault(Flags.DEFAULT_OUTPUT_FORMAT)
+        .choices("timeml", "naf").setDefault(Flags.DEFAULT_OUTPUT_FORMAT)
         .help("Choose output format; it defaults to NAF.\n");
   }
 
@@ -343,7 +340,8 @@ public class CLI {
    *          language parameter
    * @return the properties object
    */
-  private Properties setAnnotateProperties(String model, String language, String clearFeatures) {
+  private Properties setAnnotateProperties(String model, String language,
+      String clearFeatures) {
     Properties annotateProperties = new Properties();
     annotateProperties.setProperty(MODEL, model);
     annotateProperties.setProperty("language", language);
