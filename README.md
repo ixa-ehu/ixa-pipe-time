@@ -25,6 +25,8 @@ and Word2Vec clustering. To avoid duplication of efforts, we use and contribute 
 
 ### TIME-Models
 
++ [English Temporal extraction models trained on TimeBank](http://ixa2.si.ehu.es/ixa-pipes/models/time-models.tar.gz)
+
 ## CLI-USAGE
 
 ixa-pipe-time provides a runable jar with the following command-line basic functionalities:
