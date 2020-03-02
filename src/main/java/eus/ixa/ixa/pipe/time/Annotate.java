@@ -16,10 +16,6 @@
 
 package eus.ixa.ixa.pipe.time;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-
 import eus.ixa.ixa.pipe.ml.StatisticalSequenceLabeler;
 import eus.ixa.ixa.pipe.ml.sequence.SequenceLabel;
 import eus.ixa.ixa.pipe.ml.sequence.SequenceLabelerME;
@@ -28,9 +24,12 @@ import ixa.kaflib.KAFDocument;
 import ixa.kaflib.Timex3;
 import ixa.kaflib.WF;
 
+import java.util.List;
+import java.util.Properties;
+
 /**
- * Annotation class for Named Entities in ixa-pipe-time. Use this class for
- * examples on using ixa-pipe-ml API for Named Entity tagging.
+ * Annotation class for temporal expressions in ixa-pipe-time. Use this class for
+ * examples on using ixa-pipe-ml API for Sequence Labelling.
  * 
  * @author ragerri
  * @version 2018-05-14
@@ -47,14 +46,13 @@ public class Annotate {
    */
   private String clearFeatures;
 
-  public Annotate(final Properties properties) throws IOException {
+  public Annotate(final Properties properties) {
 
     this.clearFeatures = properties.getProperty("clearFeatures");
     temporalTagger = new StatisticalSequenceLabeler(properties);
   }
 
-  public final void annotateTimeToKAF(final KAFDocument kaf)
-      throws IOException {
+  public final void annotateTimeToKAF(final KAFDocument kaf) {
 
     List<List<WF>> sentences = kaf.getSentences();
 
@@ -73,8 +71,8 @@ public class Annotate {
       List<SequenceLabel> names = temporalTagger.getSequencesFromSpans(tokens,
           allSpansArray);
       for (SequenceLabel name : names) {
-        Integer startIndex = name.getSpan().getStart();
-        Integer endIndex = name.getSpan().getEnd();
+        int startIndex = name.getSpan().getStart();
+        int endIndex = name.getSpan().getEnd();
         List<WF> nameWFs = sentence.subList(startIndex, endIndex);
         ixa.kaflib.Span<WF> neSpan = KAFDocument.newWFSpan(nameWFs);
         Timex3 timex3 = kaf.newTimex3(name.getType());
