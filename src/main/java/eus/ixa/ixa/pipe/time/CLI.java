@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import net.sourceforge.argparse4j.ArgumentParsers;
@@ -47,12 +48,11 @@ import eus.ixa.ixa.pipe.ml.utils.Flags;
  * Main class of ixa-pipe-time which uses ixa-pipe-ml API.
  * 
  * @author ragerri
- * @version 2018-05-14
+ * @version 2020-03-02
  */
 public class CLI {
 
   private static final String IXA_PIPE_TIME = "ixa-pipe-time-";
-  private static final String UTF_8 = "UTF-8";
   private static final String MODEL = "model";
   private static final String ANNOTATE_PARSER_NAME = "tag";
   private static final String SERVER_PARSER_NAME = "server";
@@ -181,9 +181,9 @@ public class CLI {
       final OutputStream outputStream) throws IOException, JDOMException {
 
     BufferedReader breader = new BufferedReader(
-        new InputStreamReader(inputStream, UTF_8));
+        new InputStreamReader(inputStream, StandardCharsets.UTF_8));
     BufferedWriter bwriter = new BufferedWriter(
-        new OutputStreamWriter(outputStream, UTF_8));
+        new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
     // read KAF document from inputstream
     KAFDocument kaf = KAFDocument.createFromStream(breader);
     // load parameters into a properties
@@ -191,7 +191,7 @@ public class CLI {
     String outputFormat = parsedArguments.getString("outputFormat");
     String clearFeatures = parsedArguments.getString("clearFeatures");
     // language parameter
-    String lang = null;
+    String lang;
     if (parsedArguments.getString("language") != null) {
       lang = parsedArguments.getString("language");
       if (!kaf.getLang().equalsIgnoreCase(lang)) {
@@ -208,7 +208,7 @@ public class CLI {
     Annotate annotator = new Annotate(properties);
     annotator.annotateTimeToKAF(kaf);
     newLp.setEndTimestamp();
-    String kafToString = null;
+    String kafToString;
     if (outputFormat.equalsIgnoreCase("timeml")) {
       kafToString = annotator.annotateToTimeML(kaf);
     } else {
@@ -246,14 +246,16 @@ public class CLI {
     String host = parsedArguments.getString("host");
     String port = parsedArguments.getString("port");
     try (Socket socketClient = new Socket(host, Integer.parseInt(port));
-        BufferedReader inFromUser = new BufferedReader(
-            new InputStreamReader(System.in, UTF_8));
-        BufferedWriter outToUser = new BufferedWriter(
-            new OutputStreamWriter(System.out, UTF_8));
-        BufferedWriter outToServer = new BufferedWriter(
-            new OutputStreamWriter(socketClient.getOutputStream(), UTF_8));
-        BufferedReader inFromServer = new BufferedReader(
-            new InputStreamReader(socketClient.getInputStream(), "UTF-8"));) {
+         BufferedReader inFromUser = new BufferedReader(
+            new InputStreamReader(System.in, StandardCharsets.UTF_8));
+         BufferedWriter outToUser = new BufferedWriter(
+            new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
+         BufferedWriter outToServer = new BufferedWriter(
+            new OutputStreamWriter(socketClient.getOutputStream(),
+                StandardCharsets.UTF_8));
+         BufferedReader inFromServer = new BufferedReader(
+            new InputStreamReader(socketClient.getInputStream(),
+                StandardCharsets.UTF_8))) {
       // send data to server socket
       StringBuilder inText = new StringBuilder();
       String line;

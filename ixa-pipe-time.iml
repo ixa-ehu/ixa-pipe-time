@@ -14,11 +14,13 @@
     <orderEntry type="library" name="Maven: com.github.ixa-ehu:kaflib-naf:1.1.19" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom2:2.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
-    <orderEntry type="library" name="Maven: eus.ixa:ixa-pipe-ml:0.0.7" level="project" />
+    <orderEntry type="library" name="Maven: eus.ixa:ixa-pipe-ml:0.0.8" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.argparse4j:argparse4j:0.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.carrot2:morfologik-stemming:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.carrot2:morfologik-fsa:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:19.0" level="project" />
+    <orderEntry type="library" name="Maven: com.vdurmont:emoji-java:4.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20170516" level="project" />
     <orderEntry type="library" name="Maven: org.apache.opennlp:opennlp-tools:1.6.0" level="project" />
   </component>
 </module>
