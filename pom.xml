@@ -51,7 +51,12 @@
 		<dependency>
 			<groupId>eus.ixa</groupId>
 			<artifactId>ixa-pipe-ml</artifactId>
-			<version>0.0.8</version>
+			<version>0.0.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.clulab</groupId>
+			<artifactId>timenorm_2.13</artifactId>
+			<version>1.0.5</version>
 		</dependency>
 	</dependencies>
 

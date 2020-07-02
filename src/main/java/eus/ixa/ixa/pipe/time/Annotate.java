@@ -23,6 +23,10 @@ import eus.ixa.ixa.pipe.ml.utils.Span;
 import ixa.kaflib.KAFDocument;
 import ixa.kaflib.Timex3;
 import ixa.kaflib.WF;
+import org.clulab.timenorm.scfg.TemporalExpressionParser;
+import org.clulab.timenorm.scfg.Temporal;
+import org.clulab.timenorm.scfg.TimeSpan;
+import scala.util.Success;
 
 import java.util.List;
 import java.util.Properties;
@@ -32,7 +36,7 @@ import java.util.Properties;
  * examples on using ixa-pipe-ml API for Sequence Labelling.
  * 
  * @author ragerri
- * @version 2018-05-14
+ * @version 2020-07-02
  * 
  */
 public class Annotate {
@@ -40,16 +44,18 @@ public class Annotate {
   /**
    * The SequenceLabeler to do the annotation.
    */
-  private StatisticalSequenceLabeler temporalTagger;
+  private final StatisticalSequenceLabeler temporalTagger;
   /**
    * Clear features after every sentence or when a -DOCSTART- mark appears.
    */
-  private String clearFeatures;
+  private final String clearFeatures;
+  private final TemporalExpressionParser temporalNormalizer;
 
   public Annotate(final Properties properties) {
 
     this.clearFeatures = properties.getProperty("clearFeatures");
     temporalTagger = new StatisticalSequenceLabeler(properties);
+    temporalNormalizer = TemporalExpressionParser.en();
   }
 
   public final void annotateTimeToKAF(final KAFDocument kaf) {
@@ -77,6 +83,11 @@ public class Annotate {
         ixa.kaflib.Span<WF> neSpan = KAFDocument.newWFSpan(nameWFs);
         Timex3 timex3 = kaf.newTimex3(name.getType());
         timex3.setSpan(neSpan);
+        //normalize dates
+        if (name.getType().equalsIgnoreCase("DATE")) {
+          Success<Temporal> temporal = (Success<Temporal>) temporalNormalizer.parse(name.getString(),TimeSpan.of(2020, 07, 02));
+          timex3.setValue(temporal.get().timeMLValue());
+        }
       }
       if (clearFeatures.equalsIgnoreCase("yes")) {
         temporalTagger.clearAdaptiveData();

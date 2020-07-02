@@ -77,7 +77,7 @@ public class CLI {
   /**
    * Argument parser instance.
    */
-  private ArgumentParser argParser = ArgumentParsers
+  private final ArgumentParser argParser = ArgumentParsers
       .newArgumentParser(IXA_PIPE_TIME + version + ".jar")
       .description(IXA_PIPE_TIME + version
           + " is a multilingual temporal processing tagger developed by IXA NLP Group.\n");
@@ -89,15 +89,15 @@ public class CLI {
   /**
    * The parser that manages the annotate tagging sub-command.
    */
-  private Subparser annotateParser;
+  private final Subparser annotateParser;
   /**
    * Parser to start TCP socket for server-client functionality.
    */
-  private Subparser serverParser;
+  private final Subparser serverParser;
   /**
    * Sends queries to the serverParser for annotation.
    */
-  private Subparser clientParser;
+  private final Subparser clientParser;
 
   /**
    * Construct a CLI object with the sub-parsers to manage the command line
@@ -235,7 +235,7 @@ public class CLI {
 
   /**
    * The client to query the TCP server for annotation.
-   * 
+   *
    * @param inputStream
    *          the stdin
    * @param outputStream
